@@ -5,10 +5,12 @@ from keras_preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
 from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten
 from tensorflow.keras.models import Model
+from tensorflow.keras import layers
+
 import os
 from functools import reduce
 import datetime
-
+from transformer import TransformerBlock, TokenAndPositionEmbedding
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
@@ -49,33 +51,30 @@ y_data = np.array(xlogs)
 print("Shape Y ", y_data.shape)
 
 # Neural net
+embed_dim = 50
+num_heads = 2
+ff_dim = 32
+
 input_size = 1400
 dimension = 50
 vocabulary_size = len(tk.word_index)
 
-input_layer = Input(shape=(input_size,), name="input_layer")
-embedding_layer = Embedding(vocabulary_size + 1, dimension, input_length=input_size, name="embedding")(input_layer)
-num_filters = 128
-filter_size = 7
+inputs = layers.Input(shape=(input_size,))
+embedding_layer = TokenAndPositionEmbedding(input_size, vocabulary_size + 1, embed_dim)
+X = embedding_layer(inputs)
+transformer_block = TransformerBlock(embed_dim, num_heads, ff_dim)
+transformer_block2 = TransformerBlock(embed_dim, num_heads, ff_dim)
 
-conv_1 = Conv1D(num_filters, filter_size, activation='relu', name="conv1")(embedding_layer)
-max_pool1 = MaxPool1D(pool_size=2, name="maxpool1")(conv_1)
+X = transformer_block(X)
+X = transformer_block2(X)
+X = layers.GlobalAvgPool1D()(X)
+X = layers.Dropout(0.1)(X)
+X = layers.Dense(20, activation='relu')(X)
+X = layers.Dropout(0.1)(X)
+outputs = layers.Dense(1)(X)
 
-num_filters = 256
-filter_size = 3
 
-
-conv_2 = Conv1D(num_filters, filter_size, activation='relu', name="conv2")(max_pool1)
-max_pool2 = MaxPool1D(pool_size=2, name="maxpool2")(conv_2)
-
-X = Flatten()(max_pool1)
-
-dense1 = Dense(64, activation='relu', name="dense1")(X)
-dense2 = Dense(32, activation='relu', name="dense2")(dense1)
-
-output = Dense(1, name="dense3")(dense2)
-
-model = Model(inputs=input_layer, outputs=output)
+model = Model(inputs=inputs, outputs=outputs)
 model.compile(optimizer='adam', loss='mse', metrics=['mse']) # Adam, categorical_crossentropy
 model.summary()
 
