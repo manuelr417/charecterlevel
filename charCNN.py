@@ -75,10 +75,12 @@ dense2 = Dense(32, activation='relu', name="dense2")(dense1)
 output = Dense(1, name="dense3")(dense2)
 
 model = Model(inputs=input_layer, outputs=output)
-model.compile(optimizer='adam', loss='mse', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
+model.compile(optimizer='adam', loss='mse', metrics=['mse']) # Adam, categorical_crossentropy
 model.summary()
 
-log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+# log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+# tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+#
+# model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
-model.fit(np_data, y_data, epochs=8, validation_split=0.3, callbacks=[tensorboard_callback])
+model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)
