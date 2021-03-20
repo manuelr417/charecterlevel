@@ -11,6 +11,7 @@ import datetime
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(gpus[0], True)
+tf.config.experimental.set_memory_growth(gpus[1], True)
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
