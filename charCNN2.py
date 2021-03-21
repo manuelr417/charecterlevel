@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from keras_preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
-from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten
+from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten, GlobalMaxPool1D, Dropout
 from tensorflow.keras.models import Model
 import os
 from functools import reduce
@@ -56,32 +56,29 @@ vocabulary_size = len(tk.word_index)
 input_layer = Input(shape=(input_size,), name="input_layer")
 embedding_layer = Embedding(vocabulary_size + 1, dimension, input_length=input_size, name="embedding")(input_layer)
 num_filters = 64
-filter_size = 5
+filter_size = 7
 
 conv_1 = Conv1D(num_filters, filter_size, activation='relu', name="conv1")(embedding_layer)
-max_pool1 = MaxPool1D(pool_size=2, name="maxpool1")(conv_1)
 
 num_filters = 128
-filter_size = 5
+filter_size = 7
 
 
-conv_2 = Conv1D(num_filters, filter_size, activation='relu', name="conv2")(max_pool1)
-max_pool2 = MaxPool1D(pool_size=2, name="maxpool2")(conv_2)
-
-num_filters = 256
-filter_size = 5
+conv_2 = Conv1D(num_filters, filter_size, activation='relu', name="conv2")(conv_1)
+drop_out = Dropout(0.50, name="dropout")(conv_2)
+max_pool = GlobalMaxPool1D(name="maxpool2")(drop_out)
 
 
-conv_3 = Conv1D(num_filters, filter_size, activation='relu', name="conv3")(max_pool2)
-max_pool3 = MaxPool1D(pool_size=2, name="maxpool3")(conv_3)
+X = Flatten()(max_pool)
 
+# X = Dense(256, activation='relu', name="dense1")(X)
+# X = Dense(128, activation='relu', name="dense2")(X)
 
-X = Flatten()(max_pool3)
+X = Dense(64, activation='relu', name="dense1")(X)
 
-dense1 = Dense(64, activation='relu', name="dense1")(X)
-dense2 = Dense(32, activation='relu', name="dense2")(dense1)
+X = Dense(32, activation='relu', name="dense2")(X)
 
-output = Dense(1, activation='linear', name="dense3")(dense2)
+output = Dense(1, activation='linear', name="dense3")(X)
 
 model = Model(inputs=input_layer, outputs=output)
 model.compile(optimizer='adam', loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
@@ -90,6 +87,6 @@ model.summary()
 log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
-model.fit(np_data, y_data, epochs=20, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
+model.fit(np_data, y_data, epochs=30, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
 #model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)

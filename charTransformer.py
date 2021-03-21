@@ -14,7 +14,7 @@ from transformer import TransformerBlock, TokenAndPositionEmbedding
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
-df = pd.read_csv("sample_training2.csv")
+df = pd.read_csv("sample_training2_old.csv")
 texts = df.iloc[:,0].to_list()
 
 tk =  Tokenizer(num_words=None, char_level=True, oov_token='UNK')
