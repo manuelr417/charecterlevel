@@ -66,7 +66,7 @@ filter_size = 7
 
 conv_2 = Conv1D(num_filters, filter_size, activation='relu', name="conv2")(conv_1)
 drop_out = Dropout(0.50, name="dropout")(conv_2)
-max_pool = GlobalMaxPool1D(name="maxpool2")(drop_out)
+max_pool = MaxPool1D(name="maxpool2")(drop_out)
 
 
 X = Flatten()(max_pool)
