@@ -68,15 +68,15 @@ filter_size = 3
 conv_2 = Conv1D(num_filters, filter_size, activation='relu', name="conv2")(max_pool1)
 max_pool2 = MaxPool1D(pool_size=2, name="maxpool2")(conv_2)
 
-X = Flatten()(max_pool1)
+X = Flatten()(max_pool2)
 
 dense1 = Dense(64, activation='relu', name="dense1")(X)
 dense2 = Dense(32, activation='relu', name="dense2")(dense1)
 
-output = Dense(1, name="dense3")(dense2)
+output = Dense(1, activation='linear', name="dense3")(dense2)
 
 model = Model(inputs=input_layer, outputs=output)
-model.compile(optimizer='adam', loss='mse', metrics=['mse']) # Adam, categorical_crossentropy
+model.compile(optimizer='adam', loss='mae', metrics=['mse']) # Adam, categorical_crossentropy
 model.summary()
 
 # log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")

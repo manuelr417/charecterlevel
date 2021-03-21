@@ -71,7 +71,7 @@ X = layers.GlobalAvgPool1D()(X)
 X = layers.Dropout(0.1)(X)
 X = layers.Dense(20, activation='relu')(X)
 X = layers.Dropout(0.1)(X)
-outputs = layers.Dense(1)(X)
+outputs = layers.Dense(1, activation='linear')(X)
 
 
 model = Model(inputs=inputs, outputs=outputs)
@@ -83,4 +83,4 @@ model.summary()
 #
 # model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
-model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)
+model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3, verbose=1)
