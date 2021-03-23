@@ -58,7 +58,7 @@ print("Shape Y ", y_data.shape)
 
 # Neural net
 input_size = 1400
-dimension = 50
+dimension = 120
 vocabulary_size = len(tk.word_index)
 
 input_layer = Input(shape=(input_size,), name="input_layer")
