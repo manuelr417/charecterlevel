@@ -7,6 +7,7 @@ from keras_preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
 from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten, BatchNormalization, Add
 from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam, SGD, RMSprop
 import os
 from functools import reduce
 import datetime
@@ -92,7 +93,7 @@ output = Dense(1, name="dense5")(X)
 #%%
 
 model = Model(inputs=input_layer, outputs=output)
-model.compile(optimizer='adam', loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
+model.compile(optimizer='rmsprops', loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
 model.summary()
 
 #%%
