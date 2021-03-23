@@ -74,6 +74,7 @@ X = Activation(activation='relu')(X)
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=2)
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=3)
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=4)
+X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=5)
 
 X = Flatten()(X)
 X = Dense(1024*2, name="dense1")(X)
