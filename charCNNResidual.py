@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from keras_preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
-from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten, BatchNormalization, Add
+from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten, BatchNormalization, Add, Dropout
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam, SGD, RMSprop
 import os
@@ -83,16 +83,16 @@ X = MaxPool1D(pool_size=2)(X)
 
 X = Flatten()(X)
 X = Dense(1024*2, name="dense1")(X)
-X = BatchNormalization()(X)
+X = Dropout()(X)
 X = Activation(activation='relu')(X)
 X = Dense(1024, name="dense2")(X)
-X = BatchNormalization()(X)
+X = Dropout()(X)
 X = Activation(activation='relu')(X)
 X = Dense(512, name="dense3")(X)
-X = BatchNormalization()(X)
+X = Dropout()(X)
 X = Activation(activation='relu')(X)
 X = Dense(512/2, name="dense4")(X)
-X = BatchNormalization()(X)
+X = Dropout()(X)
 X = Activation(activation='relu')(X)
 output = Dense(1, name="dense5")(X)
 
