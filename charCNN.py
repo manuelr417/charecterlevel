@@ -11,6 +11,7 @@ import datetime
 
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 df = pd.read_csv("sample_training2.csv")
 texts = df.iloc[:,0].to_list()
