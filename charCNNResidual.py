@@ -75,6 +75,10 @@ X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=3)
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=4)
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=5)
+X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=6)
+X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=7)
+X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=8)
+
 X = MaxPool1D(pool_size=2)(X)
 
 X = Flatten()(X)
