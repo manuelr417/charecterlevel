@@ -94,7 +94,7 @@ output = Dense(1, name="dense5")(X)
 #%%
 
 model = Model(inputs=input_layer, outputs=output)
-opt = Adam(learning_rate=0.001)
+opt = Adam(learning_rate=0.0001)
 model.compile(optimizer=opt, loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
 model.summary()
 
