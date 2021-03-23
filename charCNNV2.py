@@ -99,7 +99,7 @@ model.summary()
 
 #%%
 
-model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)
+model.fit(np_data, y_data, epochs=50, batch_size= 64, validation_split=0.3)
 
 #%%
 

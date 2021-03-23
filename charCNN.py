@@ -91,6 +91,6 @@ model.summary()
 log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
-model.fit(np_data, y_data, epochs=20, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
+model.fit(np_data, y_data, epochs=50, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
 #model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)
