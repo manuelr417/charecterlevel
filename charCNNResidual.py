@@ -75,6 +75,7 @@ X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=3)
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=4)
 X = res_block(input=X, num_filters=num_filters, filter_size=filter_size, counter=5)
+X = MaxPool1D(pool_size=2)(X)
 
 X = Flatten()(X)
 X = Dense(1024*2, name="dense1")(X)
