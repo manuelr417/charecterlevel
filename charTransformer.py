@@ -67,7 +67,7 @@ transformer_block2 = TransformerBlock(embed_dim, num_heads, ff_dim)
 
 X = transformer_block(X)
 X = transformer_block2(X)
-X = layers.GlobalAvgPool1D()(X)
+#X = layers.GlobalAvgPool1D()(X)
 X = layers.Dropout(0.5)(X)
 X = layers.Dense(20, activation='relu')(X)
 X = layers.Dropout(0.1)(X)

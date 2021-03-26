@@ -8,7 +8,17 @@ from tensorflow.keras.models import Model
 import os
 from functools import reduce
 import datetime
+import matplotlib.pyplot as plt
+import seaborn as sns
 
+def plot_loss(history):
+  plt.plot(history.history['loss'], label='loss')
+  plt.plot(history.history['val_loss'], label='val_loss')
+  plt.ylim([0, 10])
+  plt.xlabel('Epoch')
+  plt.ylabel('Error [XLogP]')
+  plt.legend()
+  plt.grid(True)
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
@@ -88,9 +98,15 @@ model = Model(inputs=input_layer, outputs=output)
 model.compile(optimizer='adam', loss='mse', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
 model.summary()
 
-log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+#log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+#tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
-model.fit(np_data, y_data, epochs=50, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
+#model.fit(np_data, y_data, epochs=50, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
-#model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)
+history = model.fit(np_data, y_data, epochs=5, batch_size= 64, validation_split=0.3)
+
+hist = pd.DataFrame(history.history)
+hist['epoch'] = history.epoch
+hist.tail()
+
+plot_loss(history=history)
