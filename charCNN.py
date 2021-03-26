@@ -11,14 +11,15 @@ import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def plot_loss(history):
-  plt.plot(history.history['loss'], label='loss')
-  plt.plot(history.history['val_loss'], label='val_loss')
-  plt.ylim([0, 10])
-  plt.xlabel('Epoch')
-  plt.ylabel('Error [XLogP]')
-  plt.legend()
-  plt.grid(True)
+def plot_loss(history, filename):
+    plt.plot(history.history['loss'], label='loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.ylim([0, 10])
+    plt.xlabel('Epoch')
+    plt.ylabel('Error [XLogP]')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(filename)
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
@@ -109,4 +110,4 @@ hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
 hist.tail()
 
-plot_loss(history=history)
+plot_loss(history=history, filename="train.png")
