@@ -12,6 +12,19 @@ from functools import reduce
 import datetime
 from transformer import TransformerBlock, TokenAndPositionEmbedding
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def plot_loss(history, filename):
+    plt.plot(history.history['loss'], label='loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.ylim([0, 10])
+    plt.xlabel('Epoch')
+    plt.ylabel('Error [XLogP]')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(filename)
+
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 df = pd.read_csv("sample_training2_old.csv")
@@ -51,27 +64,27 @@ y_data = np.array(xlogs)
 print("Shape Y ", y_data.shape)
 
 # Neural net
-embed_dim = 50
+embed_dim = 128
 num_heads = 2
 ff_dim = 32
 
 input_size = 1400
-dimension = 50
+dimension = 128
 vocabulary_size = len(tk.word_index)
 
 inputs = layers.Input(shape=(input_size,))
 embedding_layer = TokenAndPositionEmbedding(input_size, vocabulary_size + 1, embed_dim)
 X = embedding_layer(inputs)
 transformer_block = TransformerBlock(embed_dim, num_heads, ff_dim)
-transformer_block2 = TransformerBlock(embed_dim, num_heads, ff_dim)
+#transformer_block2 = TransformerBlock(embed_dim, num_heads, ff_dim)
 
 X = transformer_block(X)
-X = transformer_block2(X)
+#X = transformer_block2(X)
 #X = layers.GlobalAvgPool1D()(X)
 X = layers.Dropout(0.5)(X)
 X = layers.Dense(20, activation='relu')(X)
 X = layers.Dropout(0.1)(X)
-outputs = layers.Dense(1, activation='linear')(X)
+outputs = layers.Dense(1)(X)
 
 
 model = Model(inputs=inputs, outputs=outputs)
@@ -83,4 +96,5 @@ model.summary()
 #
 # model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
-model.fit(np_data, y_data, epochs=100, batch_size= 64, validation_split=0.2, verbose=1)
+history=model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3, verbose=1)
+plot_loss(history=history, filename="plots/train.png")
