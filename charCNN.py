@@ -104,7 +104,7 @@ model.summary()
 
 #model.fit(np_data, y_data, epochs=50, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
-history = model.fit(np_data, y_data, epochs=5, batch_size= 64, validation_split=0.3)
+history = model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)
 
 hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
