@@ -110,6 +110,7 @@ output = Dense(1, name="dense4")(X)
 
 model = Model(inputs=[input_layer, input2], outputs=output)
 #opt = Adam(lr=0.001)
+# RMS
 opt = RMSprop(lr=0.001)
 model.compile(optimizer=opt, loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
 model.summary()
