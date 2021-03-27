@@ -63,26 +63,26 @@ print("Shape Y ", y_data.shape)
 
 # Neural net
 input_size = 1400
-dimension = 50
+dimension = 128
 vocabulary_size = len(tk.word_index)
 
 input_layer = Input(shape=(input_size,), name="input_layer")
 embedding_layer = Embedding(vocabulary_size + 1, dimension, input_length=input_size, name="embedding")(input_layer)
 num_filters = 64
-filter_size = 3
+filter_size = 5
 
 conv_1 = Conv1D(num_filters, filter_size, activation='relu', name="conv1")(embedding_layer)
 max_pool1 = MaxPool1D(pool_size=2, name="maxpool1")(conv_1)
 
 num_filters = 128
-filter_size = 3
+filter_size = 5
 
 
 conv_2 = Conv1D(num_filters, filter_size, activation='relu', name="conv2")(max_pool1)
 max_pool2 = MaxPool1D(pool_size=2, name="maxpool2")(conv_2)
 
 num_filters = 256
-filter_size = 3
+filter_size = 5
 
 
 conv_3 = Conv1D(num_filters, filter_size, activation='relu', name="conv3")(max_pool2)
