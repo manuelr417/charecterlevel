@@ -25,7 +25,7 @@ def plot_loss(history, filename):
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
-df = pd.read_csv("sample_training_tpsa_ca2.csv")
+df = pd.read_csv("sample_training_tpsa_caw.csv")
 df = df.sample(frac=1)
 texts = df.iloc[:,0].to_list()
 
@@ -55,8 +55,11 @@ print(data[0])
 
 np_data = np.array(data)
 print("Shape X ", np_data.shape)
-xlogs = df.iloc[:, 1].to_list()
-print(xlogs)
+weight_data =  df.iloc[:, 1].to_list()
+w_data = np.array(weight_data)
+
+xlogs = df.iloc[:, 2].to_list()
+#print(xlogs)
 
 y_data = np.array(xlogs)
 
@@ -101,15 +104,15 @@ X = Dropout(0.5)(X)
 #output = Dense(1, activation='linear', name="dense3")(dense2)
 X = Dense(1, name="dense3")(X)
 
-input2 = Input(shape=(1,))
+input2 = Input(shape=(1,) , name='weight')
 concat = Concatenate()([X,input2 ])
 
 X = Dense(8, name="dense4")(X)
 X = Dense(16, name="dense5")(X)
-X = Dense(8, name="dense=6")(X)
+X = Dense(8, name="dense6")(X)
 output = Dense(1, name="dense7")(X)
 
-model = Model(inputs=input_layer, outputs=output)
+model = Model(inputs=[input_layer, input2], outputs=output)
 #opt = Adam(lr=0.001)
 opt = RMSprop(lr=0.001)
 model.compile(optimizer=opt, loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
@@ -120,7 +123,7 @@ model.summary()
 
 #model.fit(np_data, y_data, epochs=50, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
-history = model.fit(np_data, y_data, epochs=20, batch_size= 32, validation_split=0.3)
+history = model.fit({'input_layer' :np_data, 'weight' : w_data}, y_data, epochs=20, batch_size= 32, validation_split=0.3)
 
 hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
