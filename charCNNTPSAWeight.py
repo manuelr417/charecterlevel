@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from keras_preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
-from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten, Dropout
+from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten, Dropout, Concatenate
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import SGD, Adam, RMSprop
 import os
@@ -99,7 +99,15 @@ X = Dense(32, activation='relu', name="dense2")(X)
 X = Dropout(0.5)(X)
 
 #output = Dense(1, activation='linear', name="dense3")(dense2)
-output = Dense(1, name="dense3")(X)
+X = Dense(1, name="dense3")(X)
+
+input2 = Input(shape=(1,))
+concat = Concatenate()([X,input2 ])
+
+X = Dense(8, name="dense4")(X)
+X = Dense(16, name="dense5")(X)
+X = Dense(8, name="dense=6")(X)
+output = Dense(1, name="dense7")(X)
 
 model = Model(inputs=input_layer, outputs=output)
 #opt = Adam(lr=0.001)
