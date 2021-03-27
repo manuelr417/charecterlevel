@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from keras_preprocessing.text import Tokenizer
 from keras_preprocessing.sequence import pad_sequences
-from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten
+from tensorflow.keras.layers import Input, Dense, Conv1D, MaxPool1D, Activation, Embedding, Flatten, Dropout
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import SGD, Adam, RMSprop
 import os
@@ -91,11 +91,14 @@ max_pool3 = MaxPool1D(pool_size=2, name="maxpool3")(conv_3)
 
 X = Flatten()(max_pool3)
 
-dense1 = Dense(64, activation='relu', name="dense1")(X)
-dense2 = Dense(32, activation='relu', name="dense2")(dense1)
+X = Dense(64, activation='relu', name="dense1")(X)
+X = Dropout(0.5)(X)
+
+X = Dense(32, activation='relu', name="dense2")(X)
+X = Dropout(0.5)(X)
 
 #output = Dense(1, activation='linear', name="dense3")(dense2)
-output = Dense(1, name="dense3")(dense2)
+output = Dense(1, name="dense3")(X)
 
 model = Model(inputs=input_layer, outputs=output)
 #opt = Adam(lr=0.001)
