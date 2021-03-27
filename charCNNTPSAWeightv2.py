@@ -102,7 +102,7 @@ X = Flatten()(max_pool3)
 input2 = Input(shape=(1,) , name='weight')
 concat = Concatenate()([X,input2 ])
 
-X = Dense(64, activation='relu', name="dense1")(X)
+X = Dense(64, activation='relu', name="dense1")(concat)
 X = Dropout(0.5)(X)
 
 X = Dense(32, activation='relu', name="dense2")(X)
