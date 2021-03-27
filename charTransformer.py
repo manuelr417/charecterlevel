@@ -101,4 +101,4 @@ model.summary()
 # model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
 history=model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3, verbose=1)
-plot_loss(history=history, filename="plots/train.png")
+plot_loss(history=history, filename="plots/trainMix1.png")

@@ -110,4 +110,4 @@ hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
 hist.tail()
 
-plot_loss(history=history, filename="plots/train.png")
+plot_loss(history=history, filename="plots/trainMix1.png")

@@ -10,14 +10,13 @@ from functools import reduce
 import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn import cluster
 
 def plot_loss(history, filename):
     plt.plot(history.history['loss'], label='loss')
     plt.plot(history.history['val_loss'], label='val_loss')
     plt.ylim([0, 10])
     plt.xlabel('Epoch')
-    plt.ylabel('Error [XLogP]')
+    plt.ylabel('Error [TPSA]')
     plt.legend()
     plt.grid(True)
     plt.savefig(filename)
@@ -25,15 +24,13 @@ def plot_loss(history, filename):
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
-df = pd.read_csv("sample_training2.csv")
+df = pd.read_csv("sample_training_tpsa.csv")
 texts = df.iloc[:,0].to_list()
 
 tk =  Tokenizer(num_words=None, char_level=True, oov_token='UNK')
 tk.fit_on_texts(texts)
 print(tk.word_index)
 print("word index len: ", len(tk.word_index))
-vocabulary_size = len(tk.word_index)
-
 
 sequences = tk.texts_to_sequences(texts)
 #print(texts[0])
@@ -52,7 +49,7 @@ data = pad_sequences(sequences, maxlen=1400, padding='post')
 
 
 print()
-#print(data[0])
+print(data[0])
 
 np_data = np.array(data)
 print("Shape X ", np_data.shape)
@@ -63,59 +60,28 @@ y_data = np.array(xlogs)
 
 print("Shape Y ", y_data.shape)
 
-####################################################
-#Cluster
-print("Shape Y ", y_data.shape)
-y_data_c = np.reshape(y_data, (y_data.shape[0], 1))
-print("Shape Y_c ", y_data_c.shape)
-k_means = cluster.KMeans(n_clusters=2)
-k_means.fit(y_data_c)
-predict = k_means.predict(y_data_c)
-print(predict[:20])
-print(type(predict))
-print("Shape Predict: ", predict.shape)
-
-
-#####################################################
-#
-################################################
-# Filter out
-x_train = []
-y_train = []
-len = predict.shape[0]
-for i in range(0, len):
-    if predict[i] == 0:
-        x_train.append(np_data[i])
-        y_train.append(y_data[i])
-
-x_train = np.array(x_train)
-y_train = np.array(y_train)
-print("Shape: x_train: ", x_train.shape)
-print("Shape: y_train: ", y_train.shape)
-
-
-################################################
 # Neural net
 input_size = 1400
 dimension = 50
+vocabulary_size = len(tk.word_index)
 
 input_layer = Input(shape=(input_size,), name="input_layer")
 embedding_layer = Embedding(vocabulary_size + 1, dimension, input_length=input_size, name="embedding")(input_layer)
 num_filters = 64
-filter_size = 5
+filter_size = 3
 
 conv_1 = Conv1D(num_filters, filter_size, activation='relu', name="conv1")(embedding_layer)
 max_pool1 = MaxPool1D(pool_size=2, name="maxpool1")(conv_1)
 
 num_filters = 128
-filter_size = 5
+filter_size = 3
 
 
 conv_2 = Conv1D(num_filters, filter_size, activation='relu', name="conv2")(max_pool1)
 max_pool2 = MaxPool1D(pool_size=2, name="maxpool2")(conv_2)
 
 num_filters = 256
-filter_size = 5
+filter_size = 3
 
 
 conv_3 = Conv1D(num_filters, filter_size, activation='relu', name="conv3")(max_pool2)
@@ -138,11 +104,10 @@ model.summary()
 
 #model.fit(np_data, y_data, epochs=50, batch_size= 64, validation_split=0.3, callbacks=[tensorboard_callback])
 
-#history = model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)
-history = model.fit(x_train, y_train, epochs=10, batch_size= 32, validation_split=0.3)
+history = model.fit(np_data, y_data, epochs=10, batch_size= 64, validation_split=0.3)
 
 hist = pd.DataFrame(history.history)
 hist['epoch'] = history.epoch
 hist.tail()
 
-plot_loss(history=history, filename="plots/train.png")
+plot_loss(history=history, filename="plots/trainMix1.png")
