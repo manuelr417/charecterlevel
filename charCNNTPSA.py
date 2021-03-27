@@ -25,7 +25,7 @@ def plot_loss(history, filename):
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
-df = pd.read_csv("sample_training_tpsa.csv")
+df = pd.read_csv("sample_training_tpsa_ca.csv")
 texts = df.iloc[:,0].to_list()
 
 tk =  Tokenizer(num_words=None, char_level=True, oov_token='UNK')
