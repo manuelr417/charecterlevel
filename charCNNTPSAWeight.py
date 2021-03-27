@@ -107,7 +107,7 @@ X = Dense(1, name="dense3")(X)
 input2 = Input(shape=(1,) , name='weight')
 concat = Concatenate()([X,input2 ])
 
-X = Dense(8, name="dense4")(X)
+X = Dense(8, name="dense4")(concat)
 X = Dense(16, name="dense5")(X)
 X = Dense(8, name="dense6")(X)
 output = Dense(1, name="dense7")(X)
