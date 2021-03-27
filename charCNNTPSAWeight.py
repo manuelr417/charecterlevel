@@ -11,6 +11,7 @@ from functools import reduce
 import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 def plot_loss(history, filename):
     plt.plot(history.history['loss'], label='loss')
@@ -58,7 +59,8 @@ print("Shape X ", np_data.shape)
 weight_data =  df.iloc[:, 1].to_list()
 w_data = np.array(weight_data)
 print("w_data[0]: ", w_data[0])
-w_data = tf.keras.utils.normalize(w_data)
+scaler = StandardScaler()
+w_data = scaler.fit_transform(np.reshape(w_data, (-1, 1)))
 print("normalize w_data[0]: ", w_data[0])
 
 xlogs = df.iloc[:, 2].to_list()
