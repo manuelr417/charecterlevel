@@ -99,7 +99,7 @@ output = Dense(1, activation='linear', name="dense3")(dense2)
 model = Model(inputs=input_layer, outputs=output)
 #opt = Adam(lr=0.001)
 opt = RMSprop(lr=0.001)
-model.compile(optimizer=opt, loss='mse', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
+model.compile(optimizer=opt, loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
 model.summary()
 
 #log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
