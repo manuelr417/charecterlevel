@@ -94,7 +94,8 @@ X = Flatten()(max_pool3)
 dense1 = Dense(64, activation='relu', name="dense1")(X)
 dense2 = Dense(32, activation='relu', name="dense2")(dense1)
 
-output = Dense(1, activation='linear', name="dense3")(dense2)
+#output = Dense(1, activation='linear', name="dense3")(dense2)
+output = Dense(1, name="dense3")(dense2)
 
 model = Model(inputs=input_layer, outputs=output)
 #opt = Adam(lr=0.001)
