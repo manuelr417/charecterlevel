@@ -14,7 +14,7 @@ import seaborn as sns
 def plot_loss(history, filename):
     plt.plot(history.history['loss'], label='loss')
     plt.plot(history.history['val_loss'], label='val_loss')
-    plt.ylim([0, 10])
+    #plt.ylim([0, 10])
     plt.xlabel('Epoch')
     plt.ylabel('Error [TPSA]')
     plt.legend()
