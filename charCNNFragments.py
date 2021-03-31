@@ -114,7 +114,7 @@ dense2 = Dense(32, activation='relu', name="dense2")(dense1)
 output = Dense(1, activation='linear', name="dense3")(dense2)
 
 model = Model(inputs=input_layer, outputs=output)
-model.compile(optimizer='adam', loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
+model.compile(optimizer='adam', loss='mse', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
 model.summary()
 
 #log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
