@@ -25,7 +25,8 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 column_names = ['CID', 'SMILES', 'XLOGP', 'FRAGMENTS']
-df = pd.read_csv("sample_training6.csv", names=column_names, header=None)
+df = pd.read_csv("sample_training7.csv", names=column_names, header=None)
+# Bigger model
 df.tail()
 print(df.iloc[0])
 print()
