@@ -25,7 +25,7 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 column_names = ['CID', 'SMILES', 'XLOGP', 'FRAGMENTS']
-df = pd.read_csv("sample_training8.csv", names=column_names, header=None)
+df = pd.read_csv("sample_training9.csv", names=column_names, header=None)
 # Bigger model
 df.tail()
 print(df.iloc[0])
@@ -59,8 +59,9 @@ sum_ser = reduce(lambda x, y: x + y, lens)
 print("sum ", sum_ser)
 avg_len = (sum_ser * 1.0)/(len(lens))
 print("avg_len: ", avg_len)
+input_size = 2560
 
-data = pad_sequences(sequences, maxlen=1730, padding='post')
+data = pad_sequences(sequences, maxlen=2560, padding='post')
 
 
 
@@ -79,7 +80,6 @@ y_data = np.array(xlogs)
 print("Shape Y ", y_data.shape)
 
 # Neural net
-input_size = 1730
 dimension = 128
 vocabulary_size = len(tk.word_index)
 
