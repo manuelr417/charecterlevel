@@ -14,7 +14,7 @@ import seaborn as sns
 def plot_loss(history, filename):
     plt.plot(history.history['loss'], label='loss')
     plt.plot(history.history['val_loss'], label='val_loss')
-    plt.ylim([0, 10])
+    plt.ylim([0, 5])
     plt.xlabel('Epoch')
     plt.ylabel('Error [XLogP]')
     plt.legend()
@@ -25,7 +25,7 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 column_names = ['CID', 'SMILES', 'XLOGP', 'FRAGMENTS']
-df = pd.read_csv("sample_training7.csv", names=column_names, header=None)
+df = pd.read_csv("sample_training8.csv", names=column_names, header=None)
 # Bigger model
 df.tail()
 print(df.iloc[0])
@@ -43,7 +43,7 @@ texts = df['FRAGMENTS']
 print("texts[0]: ", texts[0])
 #exit(1)
 
-tk =  Tokenizer(num_words=None, char_level=True, oov_token='UNK')
+tk =  Tokenizer(num_words=None, char_level=True, oov_token='UNK', lower=False)
 tk.fit_on_texts(texts)
 print(tk.word_index)
 print("word index len: ", len(tk.word_index))
@@ -114,7 +114,7 @@ dense2 = Dense(32, activation='relu', name="dense2")(dense1)
 output = Dense(1, activation='linear', name="dense3")(dense2)
 
 model = Model(inputs=input_layer, outputs=output)
-model.compile(optimizer='adam', loss='mse', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
+model.compile(optimizer='adam', loss='mae', metrics=['mse', 'mae']) # Adam, categorical_crossentropy
 model.summary()
 
 #log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
