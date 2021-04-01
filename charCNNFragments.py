@@ -60,7 +60,7 @@ print("sum ", sum_ser)
 avg_len = (sum_ser * 1.0)/(len(lens))
 print("avg_len: ", avg_len)
 
-data = pad_sequences(sequences, maxlen=1420, padding='post')
+data = pad_sequences(sequences, maxlen=1730, padding='post')
 
 
 
@@ -79,7 +79,7 @@ y_data = np.array(xlogs)
 print("Shape Y ", y_data.shape)
 
 # Neural net
-input_size = 1420
+input_size = 1730
 dimension = 128
 vocabulary_size = len(tk.word_index)
 
